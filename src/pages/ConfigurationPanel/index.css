@@ -1,0 +1,26 @@
+.configuration-panel {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.configuration-form {
+  padding: 1rem;
+  overflow-y: auto;
+  height: calc(100% - 64px);
+}
+
+.configuration-actions {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 64px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 -1px 5px 0 #eee;
+}
