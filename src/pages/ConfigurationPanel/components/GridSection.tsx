@@ -11,7 +11,7 @@ export default function GridSection(props: GridSectionProps) {
 
   const { form } = props;
 
-  const [enable, setEnable] = useState(false);
+  const [enable, setEnable] = useState(form.getFieldValue(['grid', 'show']));
 
   const handleEnableChange = (checked: boolean) => {
     setEnable(checked);
@@ -22,14 +22,14 @@ export default function GridSection(props: GridSectionProps) {
       <Card title="网格（grid）">
         <Row>
           <Col span={24}>
-            <Form.Item name="enableGrid" label="显示网格">
+            <Form.Item name={['grid', 'show']} label="显示网格" valuePropName="checked">
               <Switch onChange={handleEnableChange} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="borderWidth" label="网格边框线宽">
+            <Form.Item name={['grid', 'borderWidth']} label="网格边框线宽">
               <InputNumber disabled={!enable} />
             </Form.Item>
           </Col>

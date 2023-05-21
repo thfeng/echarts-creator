@@ -1,0 +1,12 @@
+.color-picker {
+  position: relative;
+}
+
+.color-picker .twitter-picker {
+  position: absolute !important;
+  z-index: 99 !important;
+}
+
+.color-picker .ant-btn {
+  padding: 0 !important;
+}

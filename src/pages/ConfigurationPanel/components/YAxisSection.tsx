@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Card, Row, Col, Switch, Input, Radio, InputNumber, Button, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { FormInstance } from 'antd';
+import { AXIS_TYPE } from '../../../common/Constant';
 
 interface YAxisSectionProps {
   form: FormInstance;
@@ -11,7 +12,7 @@ export default function YAxisSection(props: YAxisSectionProps) {
 
   const { form } = props;
 
-  const [enable, setEnable] = useState(false);
+  const [enable, setEnable] = useState(form.getFieldValue(['yAxis', 'show']));
 
   const handleEnableChange = (checked: boolean) => {
     setEnable(checked);
@@ -22,34 +23,19 @@ export default function YAxisSection(props: YAxisSectionProps) {
       <Card title="Y轴（yAxis）">
         <Row>
           <Col span={24}>
-            <Form.Item name="enableYAxis" label="显示Y轴">
+            <Form.Item name={['yAxis', 'show']} label="显示Y轴" valuePropName="checked">
               <Switch onChange={handleEnableChange} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="yAxisPosition" label="Y轴位置">
-              <Radio.Group defaultValue="left" disabled={!enable}>
-                <Radio.Button value="right">右侧</Radio.Button>
-                <Radio.Button value="left">左侧</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item name="yAxisOffset" label="Y轴偏移量">
-              <InputNumber disabled={!enable} />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item name="yAxisType" label="Y轴类型">
-              <Radio.Group defaultValue="category" disabled={!enable}>
-                <Radio.Button value="value">数值轴</Radio.Button>
-                <Radio.Button value="category">类目轴</Radio.Button>
-                <Radio.Button value="time">时间轴</Radio.Button>
-                <Radio.Button value="log">对数轴</Radio.Button>
+            <Form.Item name={['yAxis', 'type']} label="Y轴类型">
+              <Radio.Group defaultValue={AXIS_TYPE.VALUE} disabled={!enable}>
+                <Radio.Button value={AXIS_TYPE.VALUE}>数值轴</Radio.Button>
+                <Radio.Button value={AXIS_TYPE.CATEGORY}>类目轴</Radio.Button>
+                <Radio.Button value={AXIS_TYPE.TIME}>时间轴</Radio.Button>
+                <Radio.Button value={AXIS_TYPE.LOG}>对数轴</Radio.Button>
               </Radio.Group>
               <Tooltip
                 title={`
@@ -66,12 +52,27 @@ export default function YAxisSection(props: YAxisSectionProps) {
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="yAxisName" label="Y轴名称">
+            <Form.Item name={['yAxis', 'position']} label="Y轴位置">
+              <Radio.Group defaultValue="left" disabled={!enable}>
+                <Radio.Button value="right">右侧</Radio.Button>
+                <Radio.Button value="left">左侧</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name={['yAxis', 'offset']} label="Y轴偏移量">
+              <InputNumber disabled={!enable} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name={['yAxis', 'name']} label="Y轴名称">
               <Input disabled={!enable} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="yAxisNameLocation" label="Y轴名称位置">
+            <Form.Item name={['yAxis', 'nameLocation']} label="Y轴名称位置">
               <Radio.Group defaultValue="end" disabled={!enable}>
                 <Radio.Button value="end">尾部</Radio.Button>
                 <Radio.Button value="center">中间</Radio.Button>

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Form, Card, Row, Col, Switch, Input, Radio, InputNumber, Button, Tooltip } from 'antd';
+import { Form, Card, Row, Col, Switch, Input, Radio, InputNumber, Button, Tooltip, RadioChangeEvent } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { FormInstance } from 'antd';
+import { AXIS_TYPE } from "../../../common/Constant";
+import DataSourceFormItem from "../../../components/DataSourceFormItem";
 
 interface XAxisSectionProps {
   form: FormInstance;
@@ -11,10 +13,16 @@ export default function XAxisSection(props: XAxisSectionProps) {
 
   const { form } = props;
 
-  const [enable, setEnable] = useState(false);
+  const [enable, setEnable] = useState(form.getFieldValue(['xAxis', 'show']));
+  const [type, setType] = useState();
 
   const handleEnableChange = (checked: boolean) => {
     setEnable(checked);
+  }
+
+  const handleTypeChange = (e: RadioChangeEvent) => {
+    const { value } = e.target;
+    setType(value);
   }
 
   return (
@@ -22,34 +30,19 @@ export default function XAxisSection(props: XAxisSectionProps) {
       <Card title="X轴（xAxis）">
         <Row>
           <Col span={24}>
-            <Form.Item name="enableXAxis" label="显示X轴">
+            <Form.Item name={['xAxis', 'show']} label="显示X轴" valuePropName="checked">
               <Switch onChange={handleEnableChange} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="xAxisPosition" label="X轴位置">
-              <Radio.Group defaultValue="bottom" disabled={!enable}>
-                <Radio.Button value="top">顶部</Radio.Button>
-                <Radio.Button value="bottom">底部</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item name="xAxisOffset" label="X轴偏移量">
-              <InputNumber disabled={!enable} />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item name="xAxisType" label="X轴类型">
-              <Radio.Group defaultValue="category" disabled={!enable}>
-                <Radio.Button value="value">数值轴</Radio.Button>
-                <Radio.Button value="category">类目轴</Radio.Button>
-                <Radio.Button value="time">时间轴</Radio.Button>
-                <Radio.Button value="log">对数轴</Radio.Button>
+            <Form.Item name={['xAxis', 'type']} label="X轴类型">
+              <Radio.Group defaultValue={AXIS_TYPE.VALUE} disabled={!enable} onChange={handleTypeChange}>
+                <Radio.Button value={AXIS_TYPE.VALUE}>数值轴</Radio.Button>
+                <Radio.Button value={AXIS_TYPE.CATEGORY}>类目轴</Radio.Button>
+                <Radio.Button value={AXIS_TYPE.TIME}>时间轴</Radio.Button>
+                <Radio.Button value={AXIS_TYPE.LOG}>对数轴</Radio.Button>
               </Radio.Group>
               <Tooltip
                 title={`
@@ -64,14 +57,32 @@ export default function XAxisSection(props: XAxisSectionProps) {
             </Form.Item>
           </Col>
         </Row>
+        {
+          type === AXIS_TYPE.CATEGORY && <DataSourceFormItem form={form} />
+        }
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="xAxisName" label="X轴名称">
+            <Form.Item name={['xAxis', 'position']} label="X轴位置">
+              <Radio.Group defaultValue="bottom" disabled={!enable}>
+                <Radio.Button value="top">顶部</Radio.Button>
+                <Radio.Button value="bottom">底部</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name={['xAxis', 'offset']} label="X轴偏移量">
+              <InputNumber disabled={!enable} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name={['xAxis', 'name']} label="X轴名称">
               <Input disabled={!enable} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="xAxisNameLocation" label="X轴名称位置">
+            <Form.Item name={['xAxis', 'nameLocation']} label="X轴名称位置">
               <Radio.Group defaultValue="end" disabled={!enable}>
                 <Radio.Button value="end">尾部</Radio.Button>
                 <Radio.Button value="center">中间</Radio.Button>
